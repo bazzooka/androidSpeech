@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+	<plugin id="cordova.android.speech.plugin" version="0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+		<name>androidSpeech</name>
+		<js-module name="androidSpeech" src="www/androidSpeech.js">
+			<clobbers target="cordova.plugins.androidSpeech" /></js-module>
+			<platform name="android">
+				<config-file parent="/*" target="res/xml/config.xml">
+					<feature name="androidSpeech">
+						<param name="android-package" value="cordova.android.speech.plugin.androidSpeech" />
+					</feature>
+				</config-file>
+				<config-file parent="/*" target="AndroidManifest.xml"></config-file>
+				<source-file src="src/android/androidSpeech.java" target-dir="src/cordova/android/speech/plugin/androidSpeech" />
+				<source-file src="src/android/LanguageDetailsChecker.java" target-dir="src/cordova/android/speech/plugin/androidSpeech" />
+			</platform>
+		</plugin>
