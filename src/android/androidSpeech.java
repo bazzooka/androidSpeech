@@ -39,7 +39,8 @@ public class androidSpeech extends CordovaPlugin {
             return true;
         } else if ("startRecognize".equals(action)) {
             // recognize speech
-            startSpeechRecognitionActivity(args);     
+            startSpeechRecognitionActivity(args);
+            return true;     
         }
         return false;
     }
@@ -103,6 +104,11 @@ public class androidSpeech extends CordovaPlugin {
             intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, maxMatches);
         if (!prompt.equals(""))
             intent.putExtra(RecognizerIntent.EXTRA_PROMPT, prompt);
+
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.NO_RESULT, "");
+        pluginResult.setKeepCallback(true);
+        callbackContext.sendPluginResult(pluginResult);
+
         cordova.startActivityForResult(this, intent, REQUEST_CODE);
     }
 
@@ -111,15 +117,18 @@ public class androidSpeech extends CordovaPlugin {
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            // Fill the list view with the strings the recognizer thought it could have heard
-            ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+        if (requestCode == REQUEST_CODE){
 
-            returnSpeechResults(matches);
-        }
-        else {
-            // Failure - Let the caller know
-            this.callbackContext.error(Integer.toString(resultCode));
+            if (resultCode == Activity.RESULT_OK) {
+                // Fill the list view with the strings the recognizer thought it could have heard
+                ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+
+                returnSpeechResults(matches);
+            }
+            else {
+                // Failure - Let the caller know
+                this.callbackContext.error(Integer.toString(resultCode));
+            }
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -128,6 +137,9 @@ public class androidSpeech extends CordovaPlugin {
     private void returnSpeechResults(ArrayList<String> matches) {
         JSONArray jsonMatches = new JSONArray(matches);
         this.webView.loadUrl("javascript:console.log('" + jsonMatches.toString() + "')");
-        this.callbackContext.success(jsonMatches);
+        //this.callbackContext.success(jsonMatches);
+        PluginResult result = new PluginResult(PluginResult.Status.OK, jsonMatches);
+        result.setKeepCallback(true);
+        this.callbackContext.sendPluginResult(result);
     }
 }

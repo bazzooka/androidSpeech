@@ -17,6 +17,6 @@ exports.getSupportedLanguages = function(arg0, success, error) {
  * @param maxMatches The maximum number of matches to return. 0 means the service decides how many to return.
  * @param promptString An optional string to prompt the user during recognition
  */
-exports.startRecognize = function(successCallback, errorCallback, maxMatches, promptString, language) {
-    return cordova.exec(successCallback, errorCallback, "androidSpeech", "startRecognize", [maxMatches, promptString, language]);
+exports.startRecognize = function(success, error, maxMatches, promptString, language) {
+    exec(success, error, "androidSpeech", "startRecognize", [maxMatches, promptString, language]);
 };

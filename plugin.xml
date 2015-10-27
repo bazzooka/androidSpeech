@@ -9,7 +9,12 @@
 						<param name="android-package" value="cordova.android.speech.plugin.androidSpeech" />
 					</feature>
 				</config-file>
+				
 				<config-file parent="/*" target="AndroidManifest.xml"></config-file>
+
+				<config-file target="AndroidManifest.xml" parent="/manifest">
+		            <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+		        </config-file>
 				<source-file src="src/android/androidSpeech.java" target-dir="src/cordova/android/speech/plugin/androidSpeech" />
 				<source-file src="src/android/LanguageDetailsChecker.java" target-dir="src/cordova/android/speech/plugin/androidSpeech" />
 			</platform>
